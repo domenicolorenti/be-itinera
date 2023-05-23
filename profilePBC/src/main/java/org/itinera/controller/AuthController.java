@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public JSONObject doLogin(@RequestBody Credentials credentials, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
-        if(credentials.username=="domenico" && credentials.password=="domenico") {
+        if(credentials.username.equals("domenico") && credentials.password.equals("domenico")) {
             System.out.println("arrivato");
             response.setStatus(200);
             resp.put("key", 2293800);
