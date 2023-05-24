@@ -16,7 +16,6 @@ public class AuthController {
     public JSONObject doLogin(@RequestBody Credentials credentials, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
         if(!credentials.username.equals("domenico") || !credentials.password.equals("domenico")) {
-            System.out.println("Wrong Credentials");
             response.setStatus(401);
             resp.put("msg", "Invalid Username and Password");
             return resp;
@@ -33,7 +32,7 @@ public class AuthController {
     public JSONObject checkLogin(HttpServletRequest request, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
         String token = request.getHeader("Authorization");
-        System.out.println(token);
+        System.out.println("Token: " + token);
 
         if(token == null || token.isBlank()) {
             response.setStatus(Protocol.INVALID_TOKEN);
@@ -41,14 +40,9 @@ public class AuthController {
             return resp;
         }
 
-        if(token == "domenico1234") {
-            response.setStatus(Protocol.OK);
-            resp.put("msg", "bravo");
-            return resp;
-        }
-
-        response.setStatus(Protocol.SERVER_ERROR);
-        resp.put("msg", "Internal Server Error");
+        response.setStatus(Protocol.OK);
+        resp.put("msg", "bravo");
         return resp;
+
     }
 }
