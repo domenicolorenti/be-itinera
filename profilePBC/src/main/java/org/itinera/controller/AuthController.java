@@ -170,6 +170,8 @@ public class AuthController {
     public JSONObject doRegistration(@RequestBody RegistrationCredentials credentials, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
 
+        System.out.println(credentials.username + " " + credentials.password + " " + credentials.email);
+
         try {
             User user = new User();
 
@@ -188,6 +190,7 @@ public class AuthController {
                 resp.put("msg", "User already exists");
             }
             else {
+                e.printStackTrace();
                 response.setStatus(Protocol.SERVER_ERROR);
                 resp.put("msg", "Internal server error");
             }
