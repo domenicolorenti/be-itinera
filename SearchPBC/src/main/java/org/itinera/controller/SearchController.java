@@ -13,7 +13,7 @@ public class SearchController {
 
     @GetMapping("/getCities")
     public List<String> getCities() {
-        return APIManager.getInstance().getCities();
+        return null;
     }
 
 }

@@ -13,7 +13,4 @@ public class APIManager {
         return instance;
     }
 
-    public List<String> getCities() {
-        
-    }
 }
