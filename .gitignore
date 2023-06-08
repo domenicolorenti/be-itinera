@@ -1,0 +1,44 @@
+# File di build
+target/
+build/
+
+# File IDE
+.idea/
+*.iml
+
+# File di configurazione
+*.properties
+*.config
+
+# File di log
+*.log
+
+# Directory di output
+bin/
+out/
+
+# Altri file generati
+*.class
+*.jar
+*.war
+
+# File di dipendenze Maven
+/.m2/
+
+# File di caching Gradle
+.gradle/
+
+# Directory di configurazione di Eclipse
+.settings/
+
+# Directory generata da NetBeans
+nbproject/
+
+# Directory generata da IntelliJ
+out/
+
+# Directory generata da Visual Studio Code
+.vscode/
+
+# Altri file e directory specifici del progetto
+
