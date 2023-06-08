@@ -4,10 +4,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.itinera.Utils;
+import org.itinera.controller.comunication.BusinessRegistrationFields;
 import org.itinera.controller.comunication.Credentials;
 import org.itinera.controller.comunication.Protocol;
-import org.itinera.controller.comunication.RegistrationCredentials;
+import org.itinera.controller.comunication.RegistrationFields;
+import org.itinera.model.Business;
+import org.itinera.model.GeneralUser;
 import org.itinera.model.User;
+import org.itinera.persistence.JDBC.BusinessDaoJDBC;
 import org.itinera.persistence.JDBC.UserDaoJDBC;
 import org.itinera.persistence.domain.Email;
 import org.itinera.persistence.domain.Password;
@@ -16,6 +20,7 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -24,11 +29,11 @@ public class AuthController {
     @SuppressWarnings("unchecked")
     @PostMapping("/login")
     public JSONObject doLogin(@RequestBody Credentials credentials, HttpServletResponse response) {
-        User utente = null;
+        User user = null;
         JSONObject resp = new JSONObject();
 
         try {
-            utente = UserDaoJDBC.getInstance().checkCredentials(new Username(credentials.username), new Password(credentials.password));
+            user = UserDaoJDBC.getInstance().checkCredentials(new Username(credentials.username), new Password(credentials.password));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,7 +49,7 @@ public class AuthController {
             return resp;
         }
 
-        if(utente == null) {
+        if(user == null) {
             response.setStatus(Protocol.WRONG_CREDENTIALS);
             resp.put("msg", "Invalid combination of username and password");
 
@@ -90,7 +95,9 @@ public class AuthController {
         if(token != null && !token.isBlank()) {
             try {
                 //cerco l'utente che ha quel token di accesso
-                User user = UserDaoJDBC.getInstance().findByToken(token);
+                GeneralUser user = UserDaoJDBC.getInstance().findByToken(token);
+                if(user == null)
+                    user = BusinessDaoJDBC.getInstance().findByToken(token);
 
                 //se non trovo l'utente, rispondo con error 5000
                 if(user == null) {
@@ -167,10 +174,8 @@ public class AuthController {
 
     @PostMapping("/registration")
     @SuppressWarnings("unchecked")
-    public JSONObject doRegistration(@RequestBody RegistrationCredentials credentials, HttpServletResponse response) {
+    public JSONObject doRegistration(@RequestBody RegistrationFields credentials, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
-
-        System.out.println(credentials.username + " " + credentials.password + " " + credentials.email);
 
         try {
             User user = new User();
@@ -180,6 +185,108 @@ public class AuthController {
             user.setUsername(new Username(credentials.username));
 
             UserDaoJDBC.getInstance().save(user);
+            response.setStatus(Protocol.OK);
+            resp.put("msg", "Account created");
+
+            return resp;
+        } catch (SQLException e) {
+            if(e.getMessage().contains("violates unique constraint")) {
+                response.setStatus(Protocol.USER_ALREADY_EXISTS);
+                resp.put("msg", "User already exists");
+            }
+            else {
+                e.printStackTrace();
+                response.setStatus(Protocol.SERVER_ERROR);
+                resp.put("msg", "Internal server error");
+            }
+
+            return resp;
+        } catch(IllegalArgumentException | NullPointerException e2) {
+            e2.printStackTrace();
+            response.setStatus(Protocol.INVALID_CREDENTIALS);
+            resp.put("msg", "The provided credentials are not valid");
+
+            return resp;
+        }
+    }
+
+        @SuppressWarnings("unchecked")
+        @PostMapping("/businessLogin")
+        public JSONObject doBusinessLogin(@RequestBody Credentials credentials, HttpServletResponse response) {
+            Business user = null;
+            JSONObject resp = new JSONObject();
+
+            try {
+                user = BusinessDaoJDBC.getInstance().checkCredentials(new Email(credentials.username), new Password(credentials.password));
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.setStatus(Protocol.SERVER_ERROR);
+                resp.put("msg", "Internal server error");
+
+                return resp;
+            } catch (IllegalArgumentException | NullPointerException e2) {
+                e2.printStackTrace();
+                response.setStatus(Protocol.INVALID_CREDENTIALS);
+                resp.put("msg", "The provided credentials are not valid");
+
+                return resp;
+            }
+
+            if(user == null) {
+                response.setStatus(Protocol.WRONG_CREDENTIALS);
+                resp.put("msg", "Invalid combination of username and password");
+
+                return resp;
+            }
+
+            String token = "";
+
+            try {
+                token = BusinessDaoJDBC.getInstance().getToken(credentials.username);
+
+                //se il token è vuoto, ne genero uno nuovo
+                if(token== null || token.isBlank()) {
+                    String newToken = Utils.generateNewToken();
+                    BusinessDaoJDBC.getInstance().saveToken(credentials.username, newToken);
+
+                    token = newToken;
+                }
+
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                response.setStatus(Protocol.SERVER_ERROR);
+                resp.put("msg", "Internal server error");
+
+                return resp;
+            }
+
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.setStatus(Protocol.OK);
+            resp.put("key", token);
+
+            return resp;
+        }
+
+    @PostMapping("/businessRegistration")
+    @SuppressWarnings("unchecked")
+    public JSONObject doBusinessRegistration(@RequestBody BusinessRegistrationFields credentials, HttpServletResponse response) {
+        JSONObject resp = new JSONObject();
+
+        try {
+            Business business = new Business();
+
+            business.setEmail(new Email(credentials.email));
+            business.setPassword(new Password(credentials.password));
+            business.setName(credentials.name);
+            business.setAddress(credentials.address);
+            business.setCity(credentials.city);
+            business.setOwner(credentials.owner);
+            business.setPhone(credentials.phone);
+
+            BusinessDaoJDBC.getInstance().save(business);
             response.setStatus(Protocol.OK);
             resp.put("msg", "Account created");
 

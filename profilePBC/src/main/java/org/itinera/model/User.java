@@ -8,7 +8,7 @@ import org.itinera.persistence.domain.Username;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class User {
+public class User implements GeneralUser{
 
     private Username username;
     private Email email;
@@ -16,11 +16,6 @@ public class User {
     private Password password;
 
     public User() {}
-
-    public User(Username username, Password password) {
-        this.username = username;
-        this.password = password;
-    }
 
     public String getUsername() {
         return username.toString();
@@ -45,6 +40,7 @@ public class User {
     public void setEmail(Email email) {
         this.email = email;
     }
+
 
     public static User parseFromDB(ResultSet rs) throws SQLException, IllegalArgumentException, NullPointerException {
         User user = new User();
