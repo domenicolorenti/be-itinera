@@ -27,12 +27,24 @@ public class BusinessDaoJDBC extends BusinessDao {
 
     @Override
     public List<Business> getAll() throws SQLException {
-        return null;
+        String getAllQuery = "SELECT * FROM businesses";
+        PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getAllQuery);
+        ResultSet rs = stm.executeQuery();
+
+        ArrayList<Business> businesses = new ArrayList<>();
+        while(rs.next()) {
+            Business business = Business.parseFromDB(rs);
+            businesses.add(business);
+        }
+
+        stm.close();
+        rs.close();
+        return businesses;
     }
 
     @Override
     public void save(Business obj) throws SQLException {
-        String saveUserQuery = "insert into businesses values(?, ?, ?, ?, ?, ?, ?, '')";
+        String saveUserQuery = "insert into businesses values(?, ?, ?, ?, ?, ?, ?, '', ?)";
         PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveUserQuery);
 
         stm.setString(1, obj.getEmail());
@@ -42,6 +54,7 @@ public class BusinessDaoJDBC extends BusinessDao {
         stm.setString(5, obj.getCity());
         stm.setString(6, obj.getOwner());
         stm.setString(7, obj.getPhone());
+        stm.setString(8, "Account don't have a description");
 
         stm.execute();
 
@@ -64,6 +77,7 @@ public class BusinessDaoJDBC extends BusinessDao {
             user.setCity(rs.getString("city"));
             user.setOwner(rs.getString("owner"));
             user.setPhone(rs.getString("phone"));
+            user.setDescription(rs.getString("description"));
         }
 
         rs.close();
@@ -74,7 +88,27 @@ public class BusinessDaoJDBC extends BusinessDao {
 
     @Override
     public Business findByEmail(Email email) throws SQLException, IllegalArgumentException, NullPointerException {
-        return null;
+        String findByEmailQuery = "select * from businesses where email=?";
+        PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(findByEmailQuery);
+        stm.setString(1, email.toString());
+
+        ResultSet rs = stm.executeQuery();
+        Business user = null;
+        if (rs.next()) {
+            user = new Business();
+            user.setName(rs.getString("name"));
+            user.setEmail(new Email(rs.getString("email")));
+            user.setAddress(rs.getString("address"));
+            user.setCity(rs.getString("city"));
+            user.setOwner(rs.getString("owner"));
+            user.setPhone(rs.getString("phone"));
+            user.setDescription(rs.getString("description"));
+        }
+
+        rs.close();
+        stm.close();
+
+        return user;
     }
 
     @Override

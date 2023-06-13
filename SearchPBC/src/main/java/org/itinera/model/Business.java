@@ -19,9 +19,6 @@ public class Business implements GeneralUser {
     private String phone;
     private String description;
 
-    //from other PBC
-    private float vote;
-
     public Business() {}
 
     public String getName() {
@@ -99,17 +96,5 @@ public class Business implements GeneralUser {
         business.setDescription(rs.getString("description"));
 
         return business;
-    }
-
-
-
-    //from other PBC
-
-    public float getVote() {
-        return vote;
-    }
-
-    public void setVote(float vote) {
-        this.vote = vote;
     }
 }

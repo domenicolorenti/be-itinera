@@ -1,5 +1,6 @@
 package org.itinera.controller;
 
+import org.itinera.model.Business;
 import org.itinera.persistence.JDBC.BusinessDaoJDBC;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,19 @@ public class APIController {
         }
 
         return cities;
+    }
+
+    @GetMapping("/getAllBusiness")
+    public List<Business> getAllBusiness() {
+        List<Business> businesses = null;
+
+        try {
+            businesses = BusinessDaoJDBC.getInstance().getAll();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return businesses;
     }
 
     @GetMapping("/test")
