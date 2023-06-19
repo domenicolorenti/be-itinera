@@ -1,33 +1,42 @@
 package org.itinera.controller;
 
+import org.itinera.api.APIManager;
 import org.itinera.model.Review;
 import org.json.simple.JSONObject;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import org.itinera.persistence.JDBC.ReviewDaoJDBC;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
 @CrossOrigin(origins = "*")
 public class ReviewController {
 
+    @Autowired
+    APIManager apiManager;
+
+
+    @GetMapping("/isActive")
+    public String isActive() {
+        return "Review service is active";
+    }
 
     @PostMapping("/publish")
     public JSONObject doLogin(@RequestBody Review review, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
 
-
         try {
-
             ReviewDaoJDBC.getInstance().save(review);
+            apiManager.addVote(review.getBusinessEmail(), review.getVote());
             response.setStatus(Protocol.OK);
-            resp.put("msg", "Account created");
+            resp.put("msg", "Review Saved");
 
             return resp;
         } catch (SQLException e) {
@@ -43,5 +52,18 @@ public class ReviewController {
 
             return resp;
         }
+    }
+
+    @GetMapping("/getBusinessReviews")
+    public List<Review> getResult(String email) {
+        List<Review> reviews =  new ArrayList<>();
+
+        try {
+            reviews = ReviewDaoJDBC.getInstance().getReviewsFromEmail(email);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return reviews;
     }
 }

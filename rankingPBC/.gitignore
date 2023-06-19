@@ -1,0 +1,46 @@
+# File system
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Logs
+*.log
+
+# Virtual environment
+venv/
+env/
+.venv/
+.vscode/
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Static files
+staticfiles/
+static/
+
+# Media files
+media/
+
+# Compiled Python files
+*.pyc
+
+# Local development settings
+local_settings.py
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Dependency management
+pip-selfcheck.json
+requirements.txt
+
+# Ignore compiled files for translation
+*.mo
+
+# Ignore sensitive or environment-specific information
+*.secret
+*.env

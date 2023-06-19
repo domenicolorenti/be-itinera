@@ -5,7 +5,8 @@ import java.sql.SQLException;
 import java.sql.Date;
 
 public class Review {
-    private String userEmail;
+    private String businessEmail;
+    private String userName;
     private String title;
     private String description;
     private Date date;
@@ -13,12 +14,20 @@ public class Review {
 
     public Review() {}
 
-    public String getUserEmail() {
-        return userEmail;
+    public String getBusinessEmail() {
+        return businessEmail;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setBusinessEmail(String businessEmail) {
+        this.businessEmail = businessEmail;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getTitle() {
@@ -55,7 +64,8 @@ public class Review {
 
     public static Review parseFromDB(ResultSet rs) throws SQLException, IllegalArgumentException, NullPointerException {
         Review review = new Review();
-        review.setUserEmail(rs.getString("userEmail"));
+        review.setBusinessEmail(rs.getString("business"));
+        review.setUserName(rs.getString("username"));
         review.setTitle(rs.getString("title"));
         review.setDescription(rs.getString("description"));
         review.setVote(rs.getInt("vote"));

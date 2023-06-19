@@ -5,14 +5,14 @@ public class Result {
     private String email;
     private String address;
     private String description;
-    private float value;
+    private float vote;
 
     public Result(String name, String email, String address, String description, float value) {
         this.name = name;
         this.email = email;
         this.address = address;
         this.description = description;
-        this.value = value;
+        this.vote = value;
     }
 
     public String getName() {
@@ -47,11 +47,11 @@ public class Result {
         this.description = description;
     }
 
-    public float getValue() {
-        return value;
+    public float getVote() {
+        return vote;
     }
 
-    public void setValue(float value) {
-        this.value = value;
+    public void setVote(float vote) {
+        this.vote = vote;
     }
 }
