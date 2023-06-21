@@ -1,5 +1,7 @@
 package org.itinera.persistence.dao;
 
+import org.itinera.model.Photo;
+
 import java.sql.SQLException;
 import java.util.List;
 
@@ -8,5 +10,5 @@ public interface Dao <T> {
 
     void save(T obj) throws SQLException;
 
-    byte[] getPhoto(String key) throws SQLException;
+    Photo getPhoto(String key) throws SQLException;
 }

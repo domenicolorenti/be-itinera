@@ -1,8 +1,14 @@
 package org.itinera.model;
 
-public class BusinessPhoto {
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class BusinessPhoto implements Photo{
     private String email;
     private byte[] photo;
+
+
+    public BusinessPhoto() {}
 
     public BusinessPhoto(String review, byte[] photo) {
         this.email = review;
@@ -23,5 +29,13 @@ public class BusinessPhoto {
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public static BusinessPhoto parseFromDB(ResultSet rs) throws SQLException, IllegalArgumentException, NullPointerException {
+        BusinessPhoto review = new BusinessPhoto();
+        review.setEmail(rs.getString("email"));
+        review.setPhoto(rs.getBytes("photo"));
+
+        return review;
     }
 }

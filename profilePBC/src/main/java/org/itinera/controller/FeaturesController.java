@@ -1,7 +1,7 @@
 package org.itinera.controller;
 
 import org.itinera.api.APIManager;
-import org.itinera.controller.comunication.Protocol;
+import org.itinera.controller.communication.Protocol;
 import org.itinera.model.Business;
 import org.itinera.persistence.JDBC.BusinessDaoJDBC;
 import org.itinera.persistence.domain.Email;

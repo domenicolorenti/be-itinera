@@ -16,5 +16,5 @@ public abstract class BusinessPhotoDao implements Dao<BusinessPhoto> {
     public abstract void save(BusinessPhoto obj) throws SQLException;
 
     @Override
-    public abstract byte[] getPhoto(String email) throws SQLException;
+    public abstract BusinessPhoto getPhoto(String email) throws SQLException;
 }

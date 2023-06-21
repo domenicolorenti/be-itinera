@@ -4,10 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.itinera.Utils;
-import org.itinera.controller.comunication.BusinessRegistrationFields;
-import org.itinera.controller.comunication.Credentials;
-import org.itinera.controller.comunication.Protocol;
-import org.itinera.controller.comunication.RegistrationFields;
+import org.itinera.controller.communication.BusinessRegistrationFields;
+import org.itinera.controller.communication.Credentials;
+import org.itinera.controller.communication.Protocol;
+import org.itinera.controller.communication.RegistrationFields;
 import org.itinera.model.Business;
 import org.itinera.model.GeneralUser;
 import org.itinera.model.User;
@@ -20,7 +20,6 @@ import org.json.simple.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")

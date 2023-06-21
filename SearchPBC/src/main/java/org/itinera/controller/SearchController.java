@@ -1,8 +1,7 @@
 package org.itinera.controller;
 
 import org.itinera.api.APIManager;
-import org.itinera.controller.Comunication.Result;
-import org.itinera.controller.Comunication.VoteDto;
+import org.itinera.controller.Communication.Result;
 import org.itinera.model.Business;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

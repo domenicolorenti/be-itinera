@@ -1,4 +1,4 @@
-package org.itinera.controller.comunication;
+package org.itinera.controller.communication;
 
 public class BusinessRegistrationFields {
     public String name;

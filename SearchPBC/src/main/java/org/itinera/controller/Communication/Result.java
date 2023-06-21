@@ -1,4 +1,4 @@
-package org.itinera.controller.Comunication;
+package org.itinera.controller.Communication;
 
 public class Result {
     private String name;

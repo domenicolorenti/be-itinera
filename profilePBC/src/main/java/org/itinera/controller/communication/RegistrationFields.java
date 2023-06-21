@@ -1,4 +1,4 @@
-package org.itinera.controller.comunication;
+package org.itinera.controller.communication;
 
 public class RegistrationFields {
     public String username;
