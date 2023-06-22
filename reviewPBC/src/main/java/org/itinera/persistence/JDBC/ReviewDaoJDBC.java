@@ -7,6 +7,7 @@ import org.itinera.persistence.dao.ReviewDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class ReviewDaoJDBC extends ReviewDao {
     }
 
     @Override
-    public void save(Review obj) throws SQLException {
-        String saveReviewQuery = "insert into reviews values(default, ?, ?, ?, ?, ?, ?)";
+    public int save(Review obj) throws SQLException {
+        String saveReviewQuery = "INSERT INTO reviews VALUES (DEFAULT, ?, ?, ?, ?, ?, ?) RETURNING cod";
         PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveReviewQuery);
 
         stm.setString(1, obj.getBusinessEmail());
@@ -51,9 +52,14 @@ public class ReviewDaoJDBC extends ReviewDao {
         stm.setString(5, obj.getUserName());
         stm.setDate(6, obj.getDate());
 
-        stm.execute();
+        ResultSet rs = stm.executeQuery();
+        int generatedKey = 0;
+        if (rs.next()) {
+            generatedKey = rs.getInt("cod");
+        }
 
         stm.close();
+        return generatedKey;
     }
 
     @Override
@@ -75,25 +81,4 @@ public class ReviewDaoJDBC extends ReviewDao {
         return reviews;
     }
 
-    public float getBusinessValue(String email) throws SQLException {
-        String getVoteQuery = "SELECT vote FROM reviews where business=?";
-        PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getVoteQuery);
-        stm.setString(1, email);
-        ResultSet rs = stm.executeQuery();
-
-        float sum = 0F;
-        int cont = 0;
-        while(rs.next()) {
-            sum += rs.getInt("vote");
-            cont++;
-        }
-
-        stm.close();
-        rs.close();
-
-        if(cont == 0)
-            return 0;
-
-        return sum/cont;
-    }
 }

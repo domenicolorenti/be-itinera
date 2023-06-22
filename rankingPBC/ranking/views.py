@@ -24,7 +24,6 @@ def isActive(request):
 # Business votes controller #
 #############################
 
-
 class VoteDto():
     def __init__(self, email, vote):
         self.email = email
@@ -43,7 +42,7 @@ def add_vote(request):
     if email and review_vote:
         try:
             vote = Vote.objects.get(email=email)
-            vote.voteSum += int(review_vote)
+            vote.voteSum += float(review_vote)
             vote.cont += 1
             vote.save()
         except Vote.DoesNotExist:

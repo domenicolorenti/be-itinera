@@ -1,5 +1,7 @@
 package org.itinera.model;
 
+import org.itinera.controller.communication.ReviewExchange;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
@@ -70,6 +72,18 @@ public class Review {
         review.setDescription(rs.getString("description"));
         review.setVote(rs.getInt("vote"));
         review.setDate(rs.getDate("ddate"));
+
+        return review;
+    }
+
+    public static Review parseFromExchange(ReviewExchange re) {
+        Review review = new Review();
+        review.setBusinessEmail(re.getBusinessEmail());
+        review.setUserName(re.getUserName());
+        review.setTitle(re.getTitle());
+        review.setDescription(re.getDescription());
+        review.setVote(re.getVote());
+        review.setDate(re.getDate());
 
         return review;
     }

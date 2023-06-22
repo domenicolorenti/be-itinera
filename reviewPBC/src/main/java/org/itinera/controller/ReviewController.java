@@ -1,7 +1,9 @@
 package org.itinera.controller;
 
 import org.itinera.api.APIManager;
+import org.itinera.controller.communication.ReviewExchange;
 import org.itinera.model.Review;
+import org.itinera.service.ReviewService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 
@@ -20,7 +23,7 @@ import java.util.List;
 public class ReviewController {
 
     @Autowired
-    APIManager apiManager;
+    ReviewService service;
 
 
     @GetMapping("/isActive")
@@ -29,20 +32,18 @@ public class ReviewController {
     }
 
     @PostMapping("/publish")
-    public JSONObject doLogin(@RequestBody Review review, HttpServletResponse response) {
+    public JSONObject publish(@RequestBody ReviewExchange obj, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
 
         try {
-            ReviewDaoJDBC.getInstance().save(review);
-            apiManager.addVote(review.getBusinessEmail(), review.getVote());
-            response.setStatus(Protocol.OK);
-            resp.put("msg", "Review Saved");
-
-            return resp;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.setStatus(Protocol.SERVER_ERROR);
-            resp.put("msg", "Internal server error");
+            if(service.publish(obj)) {
+                response.setStatus(Protocol.OK);
+                resp.put("msg", "Review Saved");
+            }
+            else {
+                response.setStatus(Protocol.SERVER_ERROR);
+                resp.put("msg", "Internal server error");
+            }
 
             return resp;
         } catch(IllegalArgumentException | NullPointerException e2) {

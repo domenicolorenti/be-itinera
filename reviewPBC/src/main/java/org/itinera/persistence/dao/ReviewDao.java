@@ -13,7 +13,7 @@ public abstract class ReviewDao implements Dao<Review> {
     public abstract List<Review> getAll() throws SQLException;
 
     @Override
-    public abstract void save(Review obj) throws SQLException;
+    public abstract int save(Review obj) throws SQLException;
 
     public abstract List<Review> getReviewsFromEmail(String email) throws SQLException;
 }
