@@ -15,7 +15,5 @@ public abstract class ReviewPhotoDao implements Dao<ReviewPhoto> {
     @Override
     public abstract void save(ReviewPhoto obj) throws SQLException;
 
-    @Override
-    public abstract ReviewPhoto getPhoto(String cod) throws SQLException;
-
+    public abstract ReviewPhoto getPhoto(int email) throws SQLException;
 }

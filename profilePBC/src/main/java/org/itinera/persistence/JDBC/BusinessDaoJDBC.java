@@ -169,4 +169,17 @@ public class BusinessDaoJDBC extends BusinessDao {
 
         return cities;
     }
+
+    public void addDescription(String email, String desc) throws SQLException {
+
+        String addDescriptionQuery = "update businesses set description=? where email=?";
+        PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(addDescriptionQuery);
+
+        stm.setString(1, desc);
+        stm.setString(2, email);
+
+        stm.execute();
+
+        stm.close();
+    }
 }

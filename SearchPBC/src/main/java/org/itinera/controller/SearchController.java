@@ -22,7 +22,7 @@ public class SearchController {
 
     @GetMapping("/isActive")
     public String isActive() {
-        return "Profile service is active";
+        return "Search service is active";
     }
 
     @GetMapping("/getCities")

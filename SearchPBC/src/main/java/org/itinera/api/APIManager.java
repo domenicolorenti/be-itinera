@@ -36,6 +36,7 @@ public class APIManager {
 
     public List<Business> getAllBusiness() {
         String url = profileurl + "/getAllBusiness";
+
         ResponseEntity<List<Business>> response = restTemplate.exchange(url, HttpMethod.GET, null, new ParameterizedTypeReference<List<Business>>() {});
         return response.getBody();
     }

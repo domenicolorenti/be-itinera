@@ -2,18 +2,16 @@
 FROM python:3.9.6
 
 # Working directory
-WORKDIR /rankingpbc
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+WORKDIR /ranking
 
 # Copy requirements.txt to working directory
-COPY requirements.txt /rankingpbc
-RUN pip3 install -r requirements.txt
+COPY requirements.txt .
+RUN pip install -r requirements.txt
 
-COPY . /rankingpbc
+COPY . .
 
-ENV DJANGO_SETTINGS_MODULE=rankingPBC.settings
+ENV DJANGO_SUPERUSER_USERNAME=django
+ENV DJANGO_SUPERUSER_PASSWORD=admin
 
-ENTRYPOINT ["python3"] 
-CMD ["manage.py", "runserver"]
+ENTRYPOINT [ "sh" ]
+CMD [ "run.sh" ]

@@ -57,7 +57,7 @@ public class ReviewController {
 
     @GetMapping("/getBusinessReviews")
     public List<Review> getResult(String email) {
-        List<Review> reviews =  new ArrayList<>();
+        List<Review> reviews;
 
         try {
             reviews = ReviewDaoJDBC.getInstance().getReviewsFromEmail(email);

@@ -4,21 +4,21 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ReviewPhoto implements Photo{
-    private String review;
+    private int review;
     private byte[] photo;
 
     public ReviewPhoto() {}
 
-    public ReviewPhoto(String review, byte[] photo) {
+    public ReviewPhoto(int review, byte[] photo) {
         this.review = review;
         this.photo = photo;
     }
 
-    public String getReview() {
+    public int getReview() {
         return review;
     }
 
-    public void setReview(String review) {
+    public void setReview(int review) {
         this.review = review;
     }
 
@@ -32,7 +32,7 @@ public class ReviewPhoto implements Photo{
 
     public static ReviewPhoto parseFromDB(ResultSet rs) throws SQLException, IllegalArgumentException, NullPointerException {
         ReviewPhoto review = new ReviewPhoto();
-        review.setReview(rs.getString("review"));
+        review.setReview(rs.getInt("review"));
         review.setPhoto(rs.getBytes("photo"));
 
         return review;

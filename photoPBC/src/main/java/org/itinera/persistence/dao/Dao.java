@@ -10,5 +10,4 @@ public interface Dao <T> {
 
     void save(T obj) throws SQLException;
 
-    Photo getPhoto(String key) throws SQLException;
 }

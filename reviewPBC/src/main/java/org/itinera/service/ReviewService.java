@@ -20,7 +20,8 @@ public class ReviewService {
         try {
             int cod = ReviewDaoJDBC.getInstance().save(Review.parseFromExchange(review));
             apiManager.addVote(review.getBusinessEmail(), review.getVote());
-            apiManager.addPhoto(cod, review.getImage());
+            if(review.getImage() != null)
+                apiManager.addPhoto(cod, review.getImage());
         } catch (SQLException e) {
             return false;
         }

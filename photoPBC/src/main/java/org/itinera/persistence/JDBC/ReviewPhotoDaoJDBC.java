@@ -8,7 +8,6 @@ import org.itinera.persistence.dao.ReviewPhotoDao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ReviewPhotoDaoJDBC extends ReviewPhotoDao {
@@ -31,10 +30,10 @@ public class ReviewPhotoDaoJDBC extends ReviewPhotoDao {
 
     @Override
     public void save(ReviewPhoto obj) throws SQLException {
-        String saveQuery = "insert into reviewPhoto values(default, ?, ?)";
+        String saveQuery = "insert into reviewPhoto values(?, ?)";
         PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveQuery);
 
-        stm.setString(1, obj.getReview());
+        stm.setInt(1, obj.getReview());
         stm.setBytes(2, obj.getPhoto());
 
         stm.execute();
@@ -43,11 +42,11 @@ public class ReviewPhotoDaoJDBC extends ReviewPhotoDao {
     }
 
     @Override
-    public ReviewPhoto getPhoto(String cod) throws SQLException {
+    public ReviewPhoto getPhoto(int cod) throws SQLException {
 
         String getPhotoQuery = "SELECT * FROM reviewPhoto where review=?";
         PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(getPhotoQuery);
-        stm.setString(1, cod);
+        stm.setInt(1, cod);
         ResultSet rs = stm.executeQuery();
 
         ReviewPhoto reviewPhoto = null;

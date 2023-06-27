@@ -1,4 +1,5 @@
 package org.itinera.api;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -40,20 +41,23 @@ public class APIManager {
     public boolean addPhoto(int cod, String image) {
         String url = photourl + "/putReviewPhoto";
 
+        System.out.println("image: " + image);
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        MultiValueMap<String, String> requestBody = new LinkedMultiValueMap<>();
-        requestBody.add("param1", ""+cod);
-        requestBody.add("param2", image);
+        // Crea un oggetto JSON per il corpo della richiesta
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("cod", cod);
+        requestBody.put("image", image);
 
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<String> requestEntity = new HttpEntity<>(requestBody.toString(), headers);
 
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
-        String response = null;
-        response = responseEntity.getBody();
+        String response = responseEntity.getBody();
 
-        return response != null;
+        return responseEntity.getStatusCode().is2xxSuccessful();
     }
+
 }

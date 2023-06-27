@@ -1,10 +1,8 @@
 package org.itinera.persistence.JDBC;
 
 import org.itinera.model.BusinessPhoto;
-import org.itinera.model.ReviewPhoto;
 import org.itinera.persistence.DBConnection;
 import org.itinera.persistence.dao.BusinessPhotoDao;
-import org.itinera.persistence.dao.ReviewPhotoDao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,7 +29,7 @@ public class BusinessPhotoDaoJDBC extends BusinessPhotoDao {
 
     @Override
     public void save(BusinessPhoto obj) throws SQLException {
-        String saveQuery = "insert into businessPhoto values(default, ?, ?)";
+        String saveQuery = "insert into businessPhoto values(?, ?)";
         PreparedStatement stm = DBConnection.getInstance().getConnection().prepareStatement(saveQuery);
 
         stm.setString(1, obj.getEmail());

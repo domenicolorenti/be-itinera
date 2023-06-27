@@ -6,10 +6,7 @@ import org.itinera.model.ReviewPhoto;
 import org.itinera.service.PhotoService;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
@@ -24,13 +21,14 @@ public class PhotoController {
     @Autowired
     PhotoService photoService;
 
+
     @GetMapping("/isActive")
     public String isActive() {
         return "Photo service is active";
     }
 
     @SuppressWarnings("unchecked")
-    @GetMapping("/putReviewPhoto")
+    @PostMapping("/putReviewPhoto")
     public JSONObject putReviewPhoto(@RequestBody JSONObject obj, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
 
@@ -50,8 +48,16 @@ public class PhotoController {
         return resp;
     }
 
+    @GetMapping("/getReviewPhoto")
+    public ReviewPhoto getReviewPhoto(int cod, HttpServletResponse response) {
+
+        return photoService.getReviewPhoto(cod);
+
+    }
+
+
     @SuppressWarnings("unchecked")
-    @GetMapping("/putBusinessPhoto")
+    @PostMapping("/putBusinessPhoto")
     public JSONObject putBusinessPhoto(@RequestBody JSONObject obj, HttpServletResponse response) {
         JSONObject resp = new JSONObject();
 
